@@ -1,3 +1,4 @@
+// models/joke.dart
 class Joke {
   final int id;
   final String type;
@@ -19,4 +20,12 @@ class Joke {
       punchline: json['punchline'],
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Joke && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

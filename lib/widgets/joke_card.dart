@@ -1,10 +1,18 @@
+// widgets/joke_card.dart
 import 'package:flutter/material.dart';
 import '../models/joke.dart';
 
 class JokeCard extends StatelessWidget {
   final Joke joke;
+  final bool isFavorite;
+  final Function(Joke) onFavoriteToggle;
 
-  const JokeCard({Key? key, required this.joke}) : super(key: key);
+  const JokeCard({
+    Key? key, 
+    required this.joke,
+    required this.isFavorite,
+    required this.onFavoriteToggle,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +24,26 @@ class JokeCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              joke.setup,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    joke.setup,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorite ? Colors.red : Colors.grey,
+                  ),
+                  onPressed: () => onFavoriteToggle(joke),
+                ),
+              ],
             ),
             SizedBox(height: 10),
             Text(

@@ -4,11 +4,20 @@ import '../models/joke.dart';
 import '../widgets/joke_card.dart';
 
 class RandomJokeScreen extends StatefulWidget {
+  final Set<Joke> favoriteJokes;
+  final Function(Joke) onFavoriteToggle;
+
+  const RandomJokeScreen({
+    Key? key,
+    required this.favoriteJokes,
+    required this.onFavoriteToggle,
+  }) : super(key: key);
+
   @override
-  _RandomJokeScreenState createState() => _RandomJokeScreenState();
+  RandomJokeScreenState createState() => RandomJokeScreenState();
 }
 
-class _RandomJokeScreenState extends State<RandomJokeScreen> {
+class RandomJokeScreenState extends State<RandomJokeScreen> {
   late Future<Joke> _randomJoke;
 
   @override
@@ -47,6 +56,7 @@ class _RandomJokeScreenState extends State<RandomJokeScreen> {
               return Text('No joke found');
             }
 
+            final joke = snapshot.data!;
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -57,7 +67,11 @@ class _RandomJokeScreenState extends State<RandomJokeScreen> {
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   SizedBox(height: 20),
-                  JokeCard(joke: snapshot.data!),
+                  JokeCard(
+                    joke: joke,
+                    isFavorite: widget.favoriteJokes.contains(joke),
+                    onFavoriteToggle: widget.onFavoriteToggle,
+                  ),
                 ],
               ),
             );
